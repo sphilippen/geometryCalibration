@@ -1,2 +1,0 @@
-`fitDistances.py` contains all functions necessary read in data, sum up light curves, and parametrize them.
-`multilateration.py` performes the likelihood-based multi-lateration fit.
