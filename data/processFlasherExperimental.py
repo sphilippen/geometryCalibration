@@ -190,10 +190,8 @@ tray.AddModule("I3PMTSaturationFlagger")
 tray.AddModule("I3Wavedeform")
 
 def PulseShift(frame):
-    writeFrame = False
-    shiftedpulses = dataclasses.I3RecoPulseSeriesMap()
     if (frame.Has("WavedeformPulses") and frame.Has("FlasherInfo")):
-        writeFrame = True
+	shiftedpulses = dataclasses.I3RecoPulseSeriesMap()
         pulse_map = frame["WavedeformPulses"]
         flashervect = frame.Get("FlasherInfo")
         for f in flashervect:
@@ -202,17 +200,12 @@ def PulseShift(frame):
             vec = dataclasses.I3RecoPulseSeries()
             q_vect=[]
             t_vect=[]
-            #print "OM Key: ", om
-            for pulses in pulse_series:
-                #print "Pulses: ", pulses        
+            for pulse_org in pulse_series:       
                 pulse = dataclasses.I3RecoPulse()
-                q = pulses.charge
-                t = pulses.time - ft
-                pulse.time = t
-                pulse.charge = q
+                pulse.time = pulse_org.time - ft
+                pulse.charge = pulse_org.charge
                 vec.append(pulse)
             shiftedpulses[om] = vec
-    if (writeFrame):
 	frame["FlasherShiftedPulses"] = shiftedpulses
 
 
