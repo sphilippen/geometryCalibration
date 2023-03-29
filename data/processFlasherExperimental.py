@@ -157,7 +157,7 @@ def flasherdecode(frame):
 
 					leadingEdge = findLeadingEdge(launch.raw_atwd[3], thisflasher.atwd_bin_size, thisflasher.led_brightness)
 
-					thisflasher.flash_time = launch.time + leadingEdge - 8.3
+					thisflasher.flash_time = launch.time + leadingEdge # - 8.3
 					flashervect.append(thisflasher)
 
 		if (len(flashervect) > 0):
