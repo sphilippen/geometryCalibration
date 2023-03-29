@@ -97,31 +97,23 @@ tray.AddModule("I3PMTSaturationFlagger")
 tray.AddModule('I3Wavedeform', 'deform')
 
 def PulseShift(frame):
-    writeFrame = False
-    shiftedpulses=dataclasses.I3RecoPulseSeriesMap()
-    if (frame.Has("WavedeformPulses") and frame.Has("I3FlasherInfo")):
-        writeFrame = True
+    if (frame.Has("WavedeformPulses") and frame.Has("FlasherInfo")):
+	shiftedpulses = dataclasses.I3RecoPulseSeriesMap()
         pulse_map = frame["WavedeformPulses"]
-        flashervect = frame.Get("I3FlasherInfo")
+        flashervect = frame.Get("FlasherInfo")
         for f in flashervect:
                 ft = f.flash_time
-                #print(ft)
         for om, pulse_series in pulse_map:
             vec = dataclasses.I3RecoPulseSeries()
-
-            #print "OM Key: ", om
-            for pulses in pulse_series:
-                #print "Pulses: ", pulses
+            q_vect=[]
+            t_vect=[]
+            for pulse_org in pulse_series:       
                 pulse = dataclasses.I3RecoPulse()
-                q = pulses.charge
-                t = pulses.time - ft
-                
-                pulse.time = t
-                pulse.charge = q
+                pulse.time = pulse_org.time - ft
+                pulse.charge = pulse_org.charge
                 vec.append(pulse)
             shiftedpulses[om] = vec
-    if (writeFrame):
-        frame["FlasherShiftedPulses"] = shiftedpulses
+	frame["FlasherShiftedPulses"] = shiftedpulses
 
 tray.AddModule(PulseShift, Streams=[icetray.I3Frame.DAQ])
 
