@@ -193,7 +193,7 @@ def PulseShift(frame):
     writeFrame = False
     shiftedpulses = dataclasses.I3RecoPulseSeriesMap()
     if (frame.Has("WavedeformPulses") and frame.Has("FlasherInfo")):
-        writeFrame = Trues
+        writeFrame = True
         pulse_map = frame["WavedeformPulses"]
         flashervect = frame.Get("FlasherInfo")
         for f in flashervect:
